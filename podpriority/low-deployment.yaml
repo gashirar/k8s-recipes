@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: low
+  name: low
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: low
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: low
+    spec:
+      containers:
+      - image: gashirar/k8s-debug-tools:latest
+        name: low
+        resources:
+          requests:
+            cpu: "200m"
+          limits:
+            cpu: "200m"
+      priorityClassName: low
+status: {}

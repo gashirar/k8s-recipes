@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-backend
+spec:
+  podSelector:
+    matchLabels:
+      run: backend
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          run: frontend
+

@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sample-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: job-container
+        image: gashirar/k8s-debug-tools:v1
+        command: ["bash", "-c", "if [ $(($RANDOM % 100)) -lt 0 ]; then true; else false; fi"]
+        #        command: ["bash", "-c", "sleep $(( $RANDOM % 4 + 1 ))"]
+      restartPolicy: Never

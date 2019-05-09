@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: backend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: backend
+    spec:
+      containers:
+      - image: nginx
+        name: backend
+        ports:
+        - containerPort: 80
+status: {}

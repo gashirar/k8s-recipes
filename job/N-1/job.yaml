@@ -1,0 +1,8 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sample-job
+spec:
+  completions: 5
+  parallelism: 1
+
