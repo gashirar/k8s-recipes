@@ -6,12 +6,22 @@ metadata:
   name: downwardapi-example
 spec:
   containers:
-  - image: centos
+  - image: gashirar/k8s-debug-tools:v1
     name: downwardapi-example
-    command: ["sleep", "864000"]
+    command: ["bash", "-c"]
+    args:
+    - if [[ -e /etc/podinfo/labels ]]; then
+        echo -en '\n\n'; cat /etc/podinfo/labels; fi;
+      if [[ -e /etc/podinfo/annotations ]]; then
+        echo -en '\n\n'; cat /etc/podinfo/annotations; fi;
+      printenv;
+      sleep 86400;
     volumeMounts:
     - mountPath: /log
       name: log-volume
+    - name: podinfo
+      mountPath: /etc/podinfo
+      readOnly: false
     env:
       - name: K8S_NODE_NAME
         valueFrom:
@@ -25,8 +35,6 @@ spec:
         valueFrom:
           fieldRef:
             fieldPath: metadata.name
-      - name: K8S_CONTAINER_NAME
-        value: centos
       - name: K8S_POD_NAMESPACE
         valueFrom:
           fieldRef:
@@ -39,9 +47,37 @@ spec:
         valueFrom:
           fieldRef:
             fieldPath: spec.serviceAccountName
+      - name: MY_CPU_REQUEST
+        valueFrom:
+          resourceFieldRef:
+            containerName: downwardapi-example
+            resource: requests.cpu
+      - name: MY_CPU_LIMIT
+        valueFrom:
+          resourceFieldRef:
+            containerName: downwardapi-example
+            resource: limits.cpu
+      - name: MY_MEM_REQUEST
+        valueFrom:
+          resourceFieldRef:
+            containerName: downwardapi-example
+            resource: requests.memory
+      - name: MY_MEM_LIMIT
+        valueFrom:
+          resourceFieldRef:
+            containerName: downwardapi-example
+            resource: limits.memory
   volumes:
   - name: log-volume
     hostPath:
       path: /var/log
       type: Directory
-
+  - name: podinfo
+    downwardAPI:
+      items:
+        - path: "labels"
+          fieldRef:
+            fieldPath: metadata.labels
+        - path: "annotations"
+          fieldRef:
+            fieldPath: metadata.annotations
