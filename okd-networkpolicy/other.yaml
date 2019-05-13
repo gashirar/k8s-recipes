@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: other-app
+  name: other-app
+  namespace: other
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: other-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: other-app
+    spec:
+      containers:
+      - image: gashirar/k8s-debug-tools:v1
+        name: other-app
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: other-app
+  name: other-app
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: other-app
+status:
+  loadBalancer: {}
