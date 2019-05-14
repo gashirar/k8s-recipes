@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: gateway-app
+  name: gateway-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: gateway-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: gateway-app
+    spec:
+      containers:
+      - image: gashirar/k8s-debug-tools:v1
+        name: gateway-app
+        ports:
+        - containerPort: 80
+        resources: {}
+---
+status: {}
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: gateway-app
+  name: gateway-app
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: gateway-app
+status:
+  loadBalancer: {}
