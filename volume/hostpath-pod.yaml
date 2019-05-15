@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: hostpath-example
+  name: hostpath-example
+spec:
+  containers:
+  - image: gashirar/k8s-debug-tools:v1
+    name: hostpath-example
+    command: ["bash", "-c"]
+    args:
+    - mkdir -p /log/logdir/$K8S_POD_NAMESPACE/$K8S_POD_NAME/$K8S_UID;
+      touch /log/logdir/$K8S_POD_NAMESPACE/$K8S_POD_NAME/$K8S_UID/app.log;
+      sleep infinity;
+    volumeMounts:
+    - mountPath: /log
+      name: log-volume
+    env:
+    - name: K8S_UID
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.uid
+    - name: K8S_POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: K8S_POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+  volumes:
+  - name: log-volume
+    hostPath:
+      path: /var/log
+      type: Directory

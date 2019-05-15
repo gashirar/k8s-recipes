@@ -23,6 +23,10 @@ spec:
       mountPath: /etc/podinfo
       readOnly: false
     env:
+      - name: K8S_UID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.uid
       - name: K8S_NODE_NAME
         valueFrom:
           fieldRef:
