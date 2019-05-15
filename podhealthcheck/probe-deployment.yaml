@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: probe-example
+  name: probe-example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: probe-example
+  template:
+    metadata:
+      labels:
+        run: probe-example
+    spec:
+      containers:
+      - image: gashirar/k8s-debug-tools:v1
+        name: probe-example
+        ports:
+        - containerPort: 80
+          name: api-port
+        livenessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1 # libeness must be 1
+          failureThreshold: 1
+          exec:
+            command: ["true"]
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 1
+          exec:
+            command: ["true"]
+          # httpGet:
+          #  path: /error
+          #  port: api-port
+          #  httpHeaders:
+          #  - name: X-k8s-Header
+          #    value: readiness
