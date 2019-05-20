@@ -1,2 +1,2 @@
-# k8s-examples
-Kubernetes YAML examples.
+# k8s-recipes
+Kubernetes Manifest Recipes.
