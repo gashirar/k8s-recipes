@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: v2-app
+  name: v2-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: v2-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: v2-app
+    spec:
+      containers:
+      - image: gashirar/k8s-debug-tools:v1
+        name: v2-app
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: v2config

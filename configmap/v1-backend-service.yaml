@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: v1backend
+spec:
+  type: ExternalName
+  externalName: v1backend.127.0.0.1.nip.io
+
+
