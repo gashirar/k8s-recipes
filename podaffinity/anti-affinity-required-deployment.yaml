@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: anti-affinity-required
+  name: anti-affinity-required
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      run: anti-affinity-required
+  template:
+    metadata:
+      labels:
+        run: anti-affinity-required
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                - key: run
+                  operator: In
+                  values:
+                  - anti-affinity-required
+      containers:
+      - image: gashirar/k8s-debug-tools:v1
+        name: anti-affinity-required
+        command: ["bash", "-c"]
+        args:
+        - echo "$K8S_POD_NAME -> $K8S_NODE_NAME";
+          sleep infinity
+        env:
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: K8S_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
