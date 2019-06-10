@@ -1,0 +1,14 @@
+commonLabels:
+  app: petshop
+
+namePrefix:
+  petshop-
+
+# nameSuffix:
+#  -v1
+
+resources:
+- deployment.yaml
+- service.yaml
+- configmap.yaml
+- ingress.yaml

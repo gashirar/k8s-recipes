@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: app
+  template:
+    metadata:
+      labels:
+        deployment: app
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                - key: deployment
+                  operator: In
+                  values:
+                  - app
+      volumes:
+      - name: log-volume
+        hostPath:
+          path: /var/worker/log
+          type: Directory
+      - name: configmap-volume
+        configMap:
+          name: configmap
+      containers:
+      - image: gashirar/k8s-debug-tools:v1
+        name: app
+        ports:
+        - containerPort: 80
+          name: api-port
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+        - name: log-volume
+          mountPath: /log
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "1Gi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        livenessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1 # libeness must be 1
+          failureThreshold: 1
+          httpGet:
+            path: /
+            port: api-port
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 1
+          httpGet:
+            path: /
+            port: api-port
+        env:
+        - name: K8S_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: K8S_HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: K8S_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.na
+        - name: K8S_POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: K8S_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: K8S_POD_SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.serviceAccountName
+        - name: K8S_CONTAINER_NAME
+          value: app
+        - name: K8S_CPU_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: requests.cpu
+        - name: K8S_CPU_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: limits.cpu
+        - name: K8S_MEM_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: requests.memory
+        - name: K8S_MEM_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: limits.memory
