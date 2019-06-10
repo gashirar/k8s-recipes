@@ -35,9 +35,98 @@ spec:
       containers:
       - image: gashirar/k8s-debug-tools:v1
         imagePullPolicy: Always
-        name: app
+        name: adapter
         ports:
         - containerPort: 8089
+          name: adapter-port
+        volumeMounts:
+        - name: configmap-volume
+          mountPath: /etc/config
+        - name: log-volume
+          mountPath: /log
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
+        livenessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1 # libeness must be 1
+          failureThreshold: 1
+          httpGet:
+            path: /liveness
+            port: adapter-port
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 1
+          httpGet:
+            path: /readiness
+            port: adapter-port
+        env:
+        - name: SERVER_PORT
+          value: "8089"
+        - name: K8S_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: K8S_HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: K8S_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: K8S_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: K8S_SERVICE_ACCOUNT_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.serviceAccountName
+        - name: K8S_CONTAINER_NAME
+          value: app
+        - name: K8S_CPU_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: requests.cpu
+        - name: K8S_CPU_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: limits.cpu
+        - name: K8S_MEMORY_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: requests.memory
+        - name: K8S_MEMORY_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: app
+              resource: limits.memory
+      - image: gashirar/k8s-debug-tools:v1
+        imagePullPolicy: Always
+        name: app
+        ports:
+        - containerPort: 8080
           name: api-port
         volumeMounts:
         - name: configmap-volume
@@ -46,11 +135,11 @@ spec:
           mountPath: /log
         resources:
           requests:
-            cpu: "1000m"
-            memory: "1Gi"
+            cpu: "100m"
+            memory: "256Mi"
           limits:
-            cpu: "1000m"
-            memory: "1Gi"
+            cpu: "100m"
+            memory: "256Mi"
         livenessProbe:
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -58,7 +147,7 @@ spec:
           successThreshold: 1 # libeness must be 1
           failureThreshold: 1
           httpGet:
-            path: /
+            path: /liveness
             port: api-port
         readinessProbe:
           initialDelaySeconds: 5
@@ -67,11 +156,11 @@ spec:
           successThreshold: 1
           failureThreshold: 1
           httpGet:
-            path: /
+            path: /readiness
             port: api-port
         env:
         - name: SERVER_PORT
-          value: "8089"
+          value: "8080"
         - name: K8S_UID
           valueFrom:
             fieldRef:

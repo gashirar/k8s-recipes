@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  template:
+    spec:
+      containers:
+      - name: adapter
+        resources:
+          requests:
+            cpu: "150m"
+          limits:
+            cpu: "150m"
+
