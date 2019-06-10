@@ -28,18 +28,19 @@ spec:
       - name: log-volume
         hostPath:
           path: /var/worker/log
-          type: Directory
+          type: DirectoryOrCreate
       - name: configmap-volume
         configMap:
           name: configmap
       containers:
       - image: gashirar/k8s-debug-tools:v1
+        imagePullPolicy: Always
         name: app
         ports:
-        - containerPort: 80
+        - containerPort: 8089
           name: api-port
         volumeMounts:
-        - name: config-volume
+        - name: configmap-volume
           mountPath: /etc/config
         - name: log-volume
           mountPath: /log
@@ -69,6 +70,8 @@ spec:
             path: /
             port: api-port
         env:
+        - name: SERVER_PORT
+          value: "8089"
         - name: K8S_UID
           valueFrom:
             fieldRef:
@@ -84,8 +87,8 @@ spec:
         - name: K8S_POD_NAME
           valueFrom:
             fieldRef:
-              fieldPath: metadata.na
-        - name: K8S_POD_NAMESPACE
+              fieldPath: metadata.name
+        - name: K8S_NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
@@ -93,7 +96,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-        - name: K8S_POD_SERVICE_ACCOUNT
+        - name: K8S_SERVICE_ACCOUNT_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.serviceAccountName
@@ -109,12 +112,12 @@ spec:
             resourceFieldRef:
               containerName: app
               resource: limits.cpu
-        - name: K8S_MEM_REQUEST
+        - name: K8S_MEMORY_REQUEST
           valueFrom:
             resourceFieldRef:
               containerName: app
               resource: requests.memory
-        - name: K8S_MEM_LIMIT
+        - name: K8S_MEMORY_LIMIT
           valueFrom:
             resourceFieldRef:
               containerName: app

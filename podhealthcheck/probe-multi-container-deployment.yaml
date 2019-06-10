@@ -21,20 +21,24 @@ spec:
         - containerPort: 80
           name: api-port
         livenessProbe:
-          initialDelaySeconds: 40
+          initialDelaySeconds: 10
           periodSeconds: 10
           timeoutSeconds: 1
           successThreshold: 1 # libeness must be 1
           failureThreshold: 1
-          httpGet:
-            path: /liveness
-            port: 9090
+          exec:
+            command: ["true"]
         readinessProbe:
-          initialDelaySeconds: 20
+          initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 1
           successThreshold: 1
           failureThreshold: 1
-          httpGet:
-            path: /readiness
-            port: 80
+          exec:
+            command: ["true"]
+          # httpGet:
+          #  path: /error
+          #  port: api-port
+          #  httpHeaders:
+          #  - name: X-k8s-Header
+          #    value: readiness

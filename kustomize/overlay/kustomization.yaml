@@ -5,3 +5,5 @@ patches:
 - deployment-cpu.yaml
 - deployment-memory.yaml
 - deployment-healthcheck.yaml
+- deployment-replica.yaml
+- configmap.yaml
