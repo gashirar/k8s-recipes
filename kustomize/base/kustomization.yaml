@@ -11,4 +11,6 @@ resources:
 - deployment.yaml
 - service.yaml
 - configmap.yaml
+- horizontalpodautoscaler.yaml
+- poddisruptionbudget.yaml
 # - ingress.yaml
