@@ -8,9 +8,9 @@ namePrefix:
 #  -v1
 
 resources:
-- deployment.yaml
-- service.yaml
-- configmap.yaml
-- horizontalpodautoscaler.yaml
-- poddisruptionbudget.yaml
-# - ingress.yaml
+- app/deployment.yaml
+- app/service.yaml
+- app/configmap.yaml
+- infra/horizontalpodautoscaler.yaml
+- infra/poddisruptionbudget.yaml
+# - infra/ingress.yaml

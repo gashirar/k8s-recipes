@@ -47,10 +47,10 @@ spec:
         resources:
           requests:
             cpu: "100m"
-            memory: "256Mi"
+            memory: "100Mi"
           limits:
             cpu: "100m"
-            memory: "256Mi"
+            memory: "100Mi"
         livenessProbe:
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -107,21 +107,25 @@ spec:
             resourceFieldRef:
               containerName: app
               resource: requests.cpu
+              divisor: 1m
         - name: K8S_CPU_LIMIT
           valueFrom:
             resourceFieldRef:
               containerName: app
               resource: limits.cpu
+              divisor: 1m
         - name: K8S_MEMORY_REQUEST
           valueFrom:
             resourceFieldRef:
               containerName: app
               resource: requests.memory
+              divisor: 1Mi
         - name: K8S_MEMORY_LIMIT
           valueFrom:
             resourceFieldRef:
               containerName: app
               resource: limits.memory
+              divisor: 1Mi
       - image: gashirar/k8s-debug-tools:v1
         imagePullPolicy: Always
         name: app
@@ -135,10 +139,10 @@ spec:
           mountPath: /log
         resources:
           requests:
-            cpu: "100m"
+            cpu: "200m"
             memory: "256Mi"
           limits:
-            cpu: "100m"
+            cpu: "200m"
             memory: "256Mi"
         livenessProbe:
           initialDelaySeconds: 10
@@ -196,18 +200,22 @@ spec:
             resourceFieldRef:
               containerName: app
               resource: requests.cpu
+              divisor: 1m
         - name: K8S_CPU_LIMIT
           valueFrom:
             resourceFieldRef:
               containerName: app
               resource: limits.cpu
+              divisor: 1m
         - name: K8S_MEMORY_REQUEST
           valueFrom:
             resourceFieldRef:
               containerName: app
               resource: requests.memory
+              divisor: 1Mi
         - name: K8S_MEMORY_LIMIT
           valueFrom:
             resourceFieldRef:
               containerName: app
               resource: limits.memory
+              divisor: 1Mi
