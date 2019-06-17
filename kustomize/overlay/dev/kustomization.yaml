@@ -1,5 +1,5 @@
 bases:
-- ../base
+- ../../base
 
 patches:
 - app/deployment-adapter-cpu.yaml

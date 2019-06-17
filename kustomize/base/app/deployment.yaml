@@ -32,6 +32,7 @@ spec:
       - name: configmap-volume
         configMap:
           name: configmap
+      terminationGracePeriodSeconds: 40
       containers:
       - image: gashirar/k8s-debug-tools:v1
         imagePullPolicy: Always
@@ -51,6 +52,10 @@ spec:
           limits:
             cpu: "100m"
             memory: "100Mi"
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh","-c","sleep 10"]
         livenessProbe:
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -144,6 +149,10 @@ spec:
           limits:
             cpu: "200m"
             memory: "256Mi"
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh","-c","sleep 30"]
         livenessProbe:
           initialDelaySeconds: 10
           periodSeconds: 10
