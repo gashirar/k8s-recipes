@@ -1,16 +1,16 @@
 commonLabels:
-  app: petshop
+  app: sample
 
 namePrefix:
-  petshop-
+  sample-
 
 # nameSuffix:
 #  -v1
 
 resources:
-- app/deployment.yaml
-- app/service.yaml
-- app/configmap.yaml
-- infra/horizontalpodautoscaler.yaml
-- infra/poddisruptionbudget.yaml
-# - infra/ingress.yaml
+- deployment.yaml
+- service.yaml
+- configmap.yaml
+- horizontalpodautoscaler.yaml
+- poddisruptionbudget.yaml
+# - ingress.yaml

@@ -8,6 +8,6 @@ spec:
   type: ClusterIP
   ports:
   - protocol: TCP
-    port: 80
+    port: 8080
     targetPort: adapter-port
 

@@ -2,11 +2,11 @@ bases:
 - ../../base
 
 patches:
-- app/deployment-adapter-cpu.yaml
-- app/deployment-adapter-memory.yaml
-- app/deployment-adapter-healthcheck.yaml
-- app/deployment-app-cpu.yaml
-- app/deployment-app-memory.yaml
-- app/deployment-app-healthcheck.yaml
-- app/deployment-replica.yaml
-- app/configmap.yaml
+- deployment-adapter-cpu.yaml
+- deployment-adapter-memory.yaml
+- deployment-adapter-healthcheck.yaml
+- deployment-app-cpu.yaml
+- deployment-app-memory.yaml
+- deployment-app-healthcheck.yaml
+- deployment-replica.yaml
+- configmap.yaml

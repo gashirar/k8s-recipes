@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: deployment
@@ -37,8 +37,10 @@ spec:
       - image: gashirar/k8s-debug-tools:v1
         imagePullPolicy: Always
         name: adapter
+        securityContext:
+          allowPrivilegeEscalation: false
         ports:
-        - containerPort: 8089
+        - containerPort: 8081
           name: adapter-port
         volumeMounts:
         - name: configmap-volume
@@ -76,7 +78,7 @@ spec:
             port: adapter-port
         env:
         - name: SERVER_PORT
-          value: "8089"
+          value: "8081"
         - name: K8S_UID
           valueFrom:
             fieldRef:
@@ -135,7 +137,7 @@ spec:
         imagePullPolicy: Always
         name: app
         ports:
-        - containerPort: 8080
+        - containerPort: 8082
           name: api-port
         volumeMounts:
         - name: configmap-volume
@@ -173,7 +175,7 @@ spec:
             port: api-port
         env:
         - name: SERVER_PORT
-          value: "8080"
+          value: "8082"
         - name: K8S_UID
           valueFrom:
             fieldRef:
