@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-test
+spec:
+  containers:
+  - name: container-test
+    image: gashirar/k8s-debug-tools:v1
+    volumeMounts:
+    - name: all-in-one
+      mountPath: "/projected-volume"
+      readOnly: true
+  volumes:
+  - name: all-in-one
+    projected:
+      defaultMode: 0400
+      sources:
+      - configMap:
+          name: myconfigmap
+          items:
+          - key: params.txt
+            path: config/params.txt
+            mode: 0777
+      - secret:
+          name: mysecret
+          items:
+            - key: pass.txt
+              path: config/pass.txt
+      - downwardAPI:
+          items:
+            - path: "labels"
+              fieldRef:
+                fieldPath: metadata.labels
+            - path: "cpu_limit"
+              resourceFieldRef:
+                containerName: container-test
+                resource: limits.cpu
+
