@@ -13,4 +13,7 @@ resources:
 - configmap.yaml
 - horizontalpodautoscaler.yaml
 - poddisruptionbudget.yaml
-# - ingress.yaml
+- ingress.yaml
+- external-ip-service.yaml
+- external-ip-endpoints.yaml
+
