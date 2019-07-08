@@ -37,8 +37,6 @@ spec:
       - image: gashirar/k8s-debug-tools:v1
         imagePullPolicy: Always
         name: adapter
-        securityContext:
-          allowPrivilegeEscalation: false
         ports:
         - containerPort: 8081
           name: adapter-port
