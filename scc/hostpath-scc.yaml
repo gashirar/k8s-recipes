@@ -12,8 +12,4 @@ fsGroup:
   type: RunAsAny
 supplementalGroups:
   type: RunAsAny
-users:
-- my-admin-user
-groups:
-- my-admin-group
 
