@@ -9,3 +9,4 @@ patches:
 - deployment-app-memory.yaml
 - deployment-app-healthcheck.yaml
 - deployment-replica.yaml
+- deployment-serviceaccount.yaml

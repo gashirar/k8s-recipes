@@ -19,11 +19,8 @@ spec:
             podAffinityTerm:
               topologyKey: "kubernetes.io/hostname"
               labelSelector:
-                matchExpressions:
-                - key: deployment
-                  operator: In
-                  values:
-                  - app
+                matchLabels:
+                  deployment: app
       volumes:
       - name: log-volume
         hostPath:

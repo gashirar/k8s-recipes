@@ -5,3 +5,6 @@ metadata:
 data:
   endpoint.properties: |
     endpoint=http://v1backend:8080/
+  error.properties: |
+    error=index.html
+

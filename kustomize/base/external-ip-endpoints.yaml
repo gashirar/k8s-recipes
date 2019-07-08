@@ -4,6 +4,6 @@ metadata:
   name: external-ip-service
 subsets:
   - addresses:
-      - ip: 1.2.3.4
+      - ip: 216.58.197.3 # Google
     ports:
-      - port: 3306
+      - port: 80
