@@ -1,5 +1,5 @@
 bases:
-- ../../base
+- ../base
 
 patches:
 - deployment-adapter-cpu.yaml
@@ -9,4 +9,3 @@ patches:
 - deployment-app-memory.yaml
 - deployment-app-healthcheck.yaml
 - deployment-replica.yaml
-- configmap.yaml

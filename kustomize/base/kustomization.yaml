@@ -16,4 +16,4 @@ resources:
 - ingress.yaml
 - external-ip-service.yaml
 - external-ip-endpoints.yaml
-
+- external-domain-service.yaml
