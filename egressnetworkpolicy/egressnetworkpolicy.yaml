@@ -1,0 +1,12 @@
+apiVersion: network.openshift.io/v1
+kind: EgressNetworkPolicy
+metadata:
+  name: egressnetworkpolicy
+spec:
+  egress:
+  - to:
+      dnsName: www.google.com
+    type: Allow
+  - to:
+      cidrSelector: 0.0.0.0/0
+    type: Deny
