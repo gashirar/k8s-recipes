@@ -31,9 +31,9 @@ spec:
           name: configmap
       terminationGracePeriodSeconds: 40
       containers:
-      - image: gashirar/k8s-debug-tools:v1
+      - name: adapter
+        image: gashirar/k8s-debug-tools:v1
         imagePullPolicy: Always
-        name: adapter
         ports:
         - containerPort: 8081
           name: adapter-port
@@ -71,6 +71,8 @@ spec:
           httpGet:
             path: /readiness
             port: adapter-port
+        securityContext:
+          privileged: true
         env:
         - name: SERVER_PORT
           value: "8081"
@@ -128,9 +130,9 @@ spec:
               containerName: app
               resource: limits.memory
               divisor: 1Mi
-      - image: gashirar/k8s-debug-tools:v1
+      - name: app
+        image: gashirar/k8s-debug-tools:v1
         imagePullPolicy: Always
-        name: app
         ports:
         - containerPort: 8082
           name: api-port
@@ -168,6 +170,8 @@ spec:
           httpGet:
             path: /readiness
             port: api-port
+        securityContext:
+          privileged: true
         env:
         - name: SERVER_PORT
           value: "8082"
