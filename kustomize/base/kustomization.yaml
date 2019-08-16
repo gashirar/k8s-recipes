@@ -11,7 +11,7 @@ resources:
 - deployment.yaml
 - service.yaml
 - configmap.yaml
-- horizontalpodautoscaler.yaml
+  #- horizontalpodautoscaler.yaml
 - poddisruptionbudget.yaml
 - external-ip-endpoints.yaml
 - external-ip-service.yaml
