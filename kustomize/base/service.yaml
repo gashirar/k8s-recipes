@@ -10,4 +10,4 @@ spec:
   - protocol: TCP
     port: 8080
     targetPort: adapter-port
-
+    name: service-port
