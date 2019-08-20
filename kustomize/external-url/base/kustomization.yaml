@@ -1,0 +1,9 @@
+commonLabels:
+  app: external-url-sevice
+
+namePrefix:
+  sample-
+
+resources:
+- external-url-service.yaml
+

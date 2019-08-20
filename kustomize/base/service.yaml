@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: service
 spec:
+  type: ClusterIP
+  sessionAffinity: None
   selector:
     deployment: app
-  type: ClusterIP
   ports:
   - protocol: TCP
     port: 8080

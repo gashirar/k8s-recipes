@@ -1,0 +1,10 @@
+resources:
+- ../base
+
+patches:
+- patch: |-
+    - op: remove
+      path: /spec/selector
+  target:
+    kind: Service
+

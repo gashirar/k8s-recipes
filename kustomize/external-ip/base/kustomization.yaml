@@ -1,0 +1,10 @@
+commonLabels:
+  app: external-ip-service
+
+namePrefix:
+  sample-
+
+resources:
+- external-ip-endpoints.yaml
+- external-ip-service.yaml
+

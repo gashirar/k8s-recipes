@@ -1,0 +1,4 @@
+resources:
+- ../base
+- ../external-ip/selector-removed
+- ../external-url/selector-removed

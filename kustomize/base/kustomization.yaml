@@ -4,16 +4,11 @@ commonLabels:
 namePrefix:
   sample-
 
-# nameSuffix:
-#  -v1
-
 resources:
 - deployment.yaml
 - service.yaml
 - configmap.yaml
-  #- horizontalpodautoscaler.yaml
-- poddisruptionbudget.yaml
-- external-ip-endpoints.yaml
-- external-ip-service.yaml
-- external-domain-service.yaml
-- ingress.yaml
+- horizontalpodautoscaler.yaml
+- serviceaccount.yaml
+  #- poddisruptionbudget.yaml
+  #- ingress.yaml
