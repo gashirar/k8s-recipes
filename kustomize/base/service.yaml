@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: service
+  name: sample-service
 spec:
   type: ClusterIP
   sessionAffinity: None

@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress
+  name: sample-ingress
 spec:
   rules:
-  - host: example.com
+  - host: a991a0a71c4ac11e99b0f0607fa5f72b-864084602.ap-southeast-1.elb.amazonaws.com
     http:
       paths:
-      - path: /foo
+      - path: /sample
         backend:
-          serviceName: service
-          servicePort: 80
+          serviceName: sample-service
+          servicePort: 8080

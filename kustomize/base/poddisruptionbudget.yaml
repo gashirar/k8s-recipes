@@ -1,7 +1,7 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: poddisruptionbudget
+  name: sample-poddisruptionbudget
 spec:
   minAvailable: 2
   selector:

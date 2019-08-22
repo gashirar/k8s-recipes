@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: external-url-service
+  name: sample-external-url-service
 spec:
   type: ExternalName
   externalName: www.google.com

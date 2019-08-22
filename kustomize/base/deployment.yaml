@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: sample-deployment
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -29,19 +29,36 @@ spec:
                 matchLabels:
                   deployment: app
       volumes:
+      - name: adapter-app-config-volume
+        projected:
+          sources:
+          - configMap:
+              name: adapter-app-properties
+      - name: adapter-infra-config-volume
+        projected:
+          sources:
+          - configMap:
+              name: adapter-infra-properties
+      - name: application-app-config-volume
+        projected:
+          sources:
+          - configMap:
+              name: application-app-properties
+      - name: application-infra-config-volume
+        projected:
+          sources:
+          - configMap:
+              name: application-infra-properties
       - name: log-volume
         hostPath:
           path: /APL
           type: DirectoryOrCreate
-      - name: configmap-volume
-        configMap:
-          name: configmap
       terminationGracePeriodSeconds: 40
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: serviceaccount
+      serviceAccountName: sample-serviceaccount
       containers:
       - name: adapter
         image: gashirar/k8s-debug-tools:v1
@@ -51,8 +68,10 @@ spec:
           name: adapter-port
           protocol: TCP
         volumeMounts:
-        - name: configmap-volume
-          mountPath: /etc/config
+        - name: adapter-app-config-volume
+          mountPath: /etc/adapter/config/app
+        - name: adapter-infra-config-volume
+          mountPath: /etc/adapter/config/infra
         - name: log-volume
           mountPath: /log
         resources:
@@ -86,8 +105,6 @@ spec:
             path: /readiness
             port: adapter-port
             scheme: HTTP
-        securityContext:
-          privileged: true
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         env:
@@ -96,33 +113,40 @@ spec:
         - name: K8S_UID
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.uid
         - name: K8S_NODE_NAME
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: spec.nodeName
         - name: K8S_HOST_IP
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: status.hostIP
         - name: K8S_POD_NAME
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.name
         - name: K8S_NAMESPACE
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.namespace
         - name: K8S_POD_IP
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: status.podIP
         - name: K8S_SERVICE_ACCOUNT_NAME
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: spec.serviceAccountName
         - name: K8S_CONTAINER_NAME
-          value: app
+          value: adapter
         - name: K8S_CPU_REQUEST
           valueFrom:
             resourceFieldRef:
@@ -157,8 +181,10 @@ spec:
           name: api-port
           protocol: TCP
         volumeMounts:
-        - name: configmap-volume
-          mountPath: /etc/config
+        - name: application-app-config-volume
+          mountPath: /etc/application/config/app
+        - name: application-infra-config-volume
+          mountPath: /etc/application/config/infra
         - name: log-volume
           mountPath: /log
         resources:
@@ -192,8 +218,6 @@ spec:
             path: /readiness
             port: api-port
             scheme: HTTP
-        securityContext:
-          privileged: true
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         env:
@@ -202,30 +226,37 @@ spec:
         - name: K8S_UID
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.uid
         - name: K8S_NODE_NAME
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: spec.nodeName
         - name: K8S_HOST_IP
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: status.hostIP
         - name: K8S_POD_NAME
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.name
         - name: K8S_NAMESPACE
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.namespace
         - name: K8S_POD_IP
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: status.podIP
         - name: K8S_SERVICE_ACCOUNT_NAME
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: spec.serviceAccountName
         - name: K8S_CONTAINER_NAME
           value: app

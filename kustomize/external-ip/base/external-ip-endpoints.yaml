@@ -1,7 +1,7 @@
 kind: Endpoints
 apiVersion: v1
 metadata:
-  name: external-ip-service
+  name: sample-external-ip-service
 subsets:
   - addresses:
       - ip: 216.58.197.3 # Google

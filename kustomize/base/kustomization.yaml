@@ -1,14 +1,15 @@
-commonLabels:
-  app: sample
-
-namePrefix:
-  sample-
+#commonLabels:
+#  app: sample
 
 resources:
 - deployment.yaml
-- service.yaml
-- configmap.yaml
+- adapter-infra-configmap.yaml
+- adapter-app-configmap.yaml
+- application-app-configmap.yaml
+- application-infra-configmap.yaml
 - horizontalpodautoscaler.yaml
+- service.yaml
 - serviceaccount.yaml
+- route.yaml
   #- poddisruptionbudget.yaml
-  #- ingress.yaml
+- ingress.yaml
